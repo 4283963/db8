@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "local-rag-backend"
+version = "0.1.0"
+description = "Local RAG Q&A backend with FastAPI and LangChain"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.104.0",
+    "uvicorn[standard]>=0.24.0",
+    "langchain>=0.1.0",
+    "langchain-chroma>=0.1.0",
+    "langchain-huggingface>=0.0.1",
+    "langchain-community>=0.0.10",
+    "chromadb>=0.4.18",
+    "python-docx>=1.1.0",
+    "pydantic>=2.5.0",
+    "python-dotenv>=1.0.0",
+    "sentence-transformers>=2.2.2",
+    "transformers>=4.36.0",
+    "torch>=2.1.0",
+    "ollama>=0.1.6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "black>=23.10.0",
+    "isort>=5.12.0",
+]
