@@ -3,10 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import ChatMessage from "@/components/ChatMessage";
 import ChatInput from "@/components/ChatInput";
-import { ChatMessage as ChatMessageType, chat, getDocuments, indexDocuments, DocumentsResponse } from "@/lib/api";
+import { ChatMessage as ChatMessageType, Source, chat, getDocuments, indexDocuments, DocumentsResponse } from "@/lib/api";
+
+interface MessageWithSources extends ChatMessageType {
+  sources?: Source[];
+}
 
 export default function Home() {
-  const [messages, setMessages] = useState<ChatMessageType[]>([]);
+  const [messages, setMessages] = useState<MessageWithSources[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isIndexing, setIsIndexing] = useState(false);
   const [docsInfo, setDocsInfo] = useState<DocumentsResponse | null>(null);
@@ -50,15 +54,16 @@ export default function Home() {
     }
 
     setError(null);
-    const userMessage: ChatMessageType = { role: "user", content: question };
+    const userMessage: MessageWithSources = { role: "user", content: question };
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
 
     try {
       const response = await chat(question, messages);
-      const assistantMessage: ChatMessageType = {
+      const assistantMessage: MessageWithSources = {
         role: "assistant",
         content: response.answer,
+        sources: response.sources,
       };
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (err) {
@@ -138,6 +143,7 @@ export default function Home() {
                   key={index}
                   role={msg.role}
                   content={msg.content}
+                  sources={msg.sources}
                 />
               ))}
               {isLoading && (

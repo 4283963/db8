@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Tuple, Optional
 from langchain_core.documents import Document
 from langchain_core.embeddings import Embeddings
 from langchain_chroma import Chroma
@@ -47,6 +47,11 @@ class VectorStore:
         if not self.vector_store:
             raise RuntimeError("Vector store not initialized")
         return self.vector_store.similarity_search(query, k=top_k)
+
+    def similarity_search_with_score(self, query: str, top_k: int = settings.TOP_K) -> List[Tuple[Document, float]]:
+        if not self.vector_store:
+            raise RuntimeError("Vector store not initialized")
+        return self.vector_store.similarity_search_with_score(query, k=top_k)
 
     def delete_collection(self) -> None:
         if self.vector_store:

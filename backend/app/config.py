@@ -12,6 +12,11 @@ class Settings(BaseSettings):
     CHUNK_OVERLAP: int = 50
     TOP_K: int = 4
 
+    RAG_MAX_WORKERS: int = 4
+    RAG_MAX_CONCURRENT_CHAT: int = 4
+    RAG_CHAT_TIMEOUT: int = 120
+    RAG_INDEX_TIMEOUT: int = 600
+
     class Config:
         env_file = ".env"
         case_sensitive = True

@@ -69,7 +69,7 @@ class ChatService:
                 elif msg["role"] == "assistant":
                     history.append(AIMessage(content=msg["content"]))
 
-        source_docs = self.vector_store.similarity_search(question)
+        source_docs = self.vector_store.similarity_search_with_score(question)
 
         answer = self.rag_chain.invoke(
             {"question": question, "chat_history": history}
@@ -79,8 +79,9 @@ class ChatService:
             {
                 "content": doc.page_content,
                 "source": doc.metadata.get("source", "unknown"),
+                "score": round(max(0, 1 - distance), 4),
             }
-            for doc in source_docs
+            for doc, distance in source_docs
         ]
 
         return {"answer": answer, "sources": sources}

@@ -6,6 +6,7 @@ export interface ChatMessage {
 export interface Source {
   content: string;
   source: string;
+  score: number;
 }
 
 export interface ChatRequest {
